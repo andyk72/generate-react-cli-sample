@@ -1,68 +1,116 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Infos
+-----
 
-## Available Scripts
+This project concerns the React Component automatic CLI generation topic: speeding up React Components creation/scaffolding with automatic CLI tools.
 
-In the project directory, you can run:
+In particular, it demoes the use of a specific CLI tool:  
+```
+generate-react-cli
+```
 
-### `yarn start`
+create-component npm script
+---------------------------
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+We added a 'create-component' npm script, which is a wrapper to generate-react-cli.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Samples (npm run create-component)
+----------------------------------
 
-### `yarn test`
+Create Hello Component
+```
+> COMPONENT=Hello npm run create-component
+```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Create Hello Component with a customized param (withTest, in this case)
+```
+> COMPONENT=Hello npm run create-component -- --withTest=false
+```
 
-### `yarn build`
+Create Home Component of type 'page' (assumes 'page' component in confguration)
+```
+> COMPONENT=Home npm run create-component -- --type=page
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Create OneColumn Component of type 'layout' (assumes 'layout' component in confguration)
+```
+> COMPONENT=OneColumn npm run create-component -- --type=layout
+```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+generate-react-cli - Resources
+------------------------------
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+[generate-react-cli npm module](https://www.npmjs.com/package/generate-react-cli)  
+[generate-react-cli github repository](https://github.com/arminbro/generate-react-cli)
 
-### `yarn eject`
+generate-react-cli - Configuration
+----------------------------------
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+On its first use per project, generate-react-cli  will generate a generate-react-cli.json configuration file, which it will use on every following use.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+generate-react-cli - Use cases
+------------------------------
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Default
+```
+> npx generate-react-cli component Box
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Use with command line params (overrides config file)
+```
+> npx generate-react-cli component Box --withTest=false
+```
 
-## Learn More
+Use with custom component type
+```
+> npx generate-react-cli component HomePage --type=page
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+generate-react-cli - Custom component types
+-------------------------------------------
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+By default, GRC will use the component.default configuration rules when running the component command out of the box.  
 
-### Code Splitting
+What if you wanted to generate other types of components that have their own set of config rules (e.g., page or layout)?  
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+You can do so by extending the generate-react-cli.json config file like this.
 
-### Analyzing the Bundle Size
+```
+{
+  "usesTypeScript": false,
+  "usesCssModule": true,
+  "cssPreprocessor": "scss",
+  "testLibrary": "Testing Library",
+  "component": {
+    "default": {
+      "path": "src/components",
+      "withLazy": false,
+      "withStory": false,
+      "withStyle": true,
+      "withTest": true
+    },
+    "page": {
+      "path": "src/pages",
+      "withLazy": true,
+      "withStory": false,
+      "withStyle": true,
+      "withTest": true
+    },
+    "layout": {
+      "path": "src/layout",
+      "withLazy": false,
+      "withStory": false,
+      "withStyle": false,
+      "withTest": true
+    }
+  }
+}
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+Now you can generate a component with your custom component types like this:
 
-### Making a Progressive Web App
+```
+> npx generate-react-cli component HomePage --type=page
+> npx generate-react-cli component BoxLayout --type=layout
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
 
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

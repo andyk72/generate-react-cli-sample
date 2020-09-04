@@ -1,0 +1,29 @@
+{
+  "usesTypeScript": false,
+  "usesCssModule": true,
+  "cssPreprocessor": "css",
+  "testLibrary": "Enzyme",
+  "component": {
+    "default": {
+      "path": "src/components",
+      "withStyle": true,
+      "withTest": true,
+      "withStory": false,
+      "withLazy": false
+    },
+    "page": {
+      "path": "src/pages",
+      "withStyle": true,
+      "withTest": true,
+      "withStory": false,
+      "withLazy": true
+    },
+    "layout": {
+      "path": "src/layout",
+      "withStyle": true,
+      "withTest": true,
+      "withStory": false,
+      "withLazy": false
+    }
+  }
+}
